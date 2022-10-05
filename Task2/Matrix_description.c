@@ -12,6 +12,7 @@ float** Matrix_input (float** matrix, int* row, int* column){
 		for (int j = 0; j < *column; j++)
 				scanf("%f", &matrix[i][j]);
 	}
+	printf("\n");
 	return matrix;
 }
 
@@ -37,13 +38,16 @@ void Matrix_x (float** matrix, int row, int column){
 	for (int i = 0; i < row; i++)
 		for (int j = 0; j < column; j++)
 			matrix[i][j] *= number;
+	printf("\n");
 }
 
 float** Matrix_sum (float** matrix_1, int row_1, int column_1, float** matrix_2, int row_2, int column_2, float** matrix_3, int* row_3, int* column_3){
 	if ((row_1 != row_2) || (column_1 != column_2)){
 		printf("The sizes of the matrices are different!");
+		printf("\n");
 		return matrix_3;
 	}
+	Matrix_free(matrix_3, *row_3);
 	*row_3 = row_1;
 	*column_3 = column_1;
 	matrix_3 = (float**) malloc(sizeof(float*) * *row_3);
@@ -58,8 +62,10 @@ float** Matrix_sum (float** matrix_1, int row_1, int column_1, float** matrix_2,
 float** Matrix_mul (float** matrix_1, int row_1, int column_1, float** matrix_2, int row_2, int column_2, float** matrix_3, int* row_3, int* column_3){
 	if (column_1 != row_2){
 		printf("The sizes of the matrices do not fit each other!");
+		printf("\n");
 		return matrix_3;
 	}
+	Matrix_free(matrix_3, *row_3);
 	*row_3 = row_1;
 	*column_3 = column_2;
 	float sum;
@@ -107,9 +113,10 @@ float Matrix_det (float** matrix, int row, int column){
 			matrix[j] = matrix[swap];
 			matrix[swap] = c;
 			determinant *= -1;
+			free(c);
 		}
 		determinant *= matrix[j][j];
-		Matrix_output(matrix, row, column);
+		//Matrix_output(matrix, row, column);
 	}
 	return determinant;
 }
