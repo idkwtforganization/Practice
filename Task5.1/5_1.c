@@ -54,50 +54,53 @@ int main(int argc, char *argv[]){
 	}
 	char *s = NULL;
 	while (s = get_s(fl)){
-		int flag = 0, flag2 = 0, count = 0;
+		int flag_found_word = 0, flag_found_space = 0, count = 0;
 		long int rem = 0, rem2 = 0;
 		char *str = NULL, c;
 		str = s;
 		s[strlen(s)] = ' ';
-		char **mas = malloc(sizeof(char*));
-		mas[count] = NULL;
+		char **mas_of_strings = malloc(sizeof(char*));
+		mas_of_strings[count] = NULL;
 		for (int i = 0; i < strlen(s); i++){
 			char *cpy = NULL;
 			switch (s[i]){
 				case ' ': {
-					if ((flag == 1) && (flag2 == 0)){
+					if ((flag_found_word == 1) && (flag_found_space == 0)){
 						c = s[i];
 						s[i] = '\0';
-						if (mas[count] == NULL){
-							mas[count] = malloc((s + i + 1 - str) * sizeof(char));
-							strcpy(mas[count], str);
+						if (mas_of_strings[count] == NULL){
+							mas_of_strings[count] = malloc((s + i + 1 - str) * sizeof(char));
+							strcpy(mas_of_strings[count], str);
 						} else {
-							rem2 = strlen(mas[count]);
-							mas[count] = realloc(mas[count], strlen(mas[count]) + i + s - str + 1);
-							strcpy(mas[count] + rem2, str);
+							rem2 = strlen(mas_of_strings[count]);
+							mas_of_strings[count] = realloc(mas_of_strings[count], strlen(mas_of_strings[count]) + i + s - str + 1);
+							strcpy(mas_of_strings[count] + rem2, str);
 						}
 						count++;
-						mas = realloc(mas, (count + 1) * sizeof(char *));
-						mas[count] = NULL;
+						mas_of_strings = realloc(mas_of_strings, (count + 1) * sizeof(char *));
+						mas_of_strings[count] = NULL;
 						s[i] = c;
-						flag = 0;
+						flag_found_word = 0;
 					}
 					break;
 				}
-				case '&': if (cpy == NULL) cpy = "&"; case '|': if (cpy == NULL) cpy = "|"; case '>': if (cpy == NULL) cpy = ">"; case ';': if (cpy == NULL) cpy = ";"; case '<': if (cpy == NULL) cpy = "<"; case '(': if (cpy == NULL) cpy = "("; case ')': if (cpy == NULL) cpy = ")"; {
-					if (mas[count] != NULL){
-						if (flag == 1){
+				case '&': if (cpy == NULL) cpy = "&"; case '|': if (cpy == NULL) cpy = "|";
+				case '>': if (cpy == NULL) cpy = ">"; case ';': if (cpy == NULL) cpy = ";";
+				case '<': if (cpy == NULL) cpy = "<"; case '(': if (cpy == NULL) cpy = "(";
+				case ')': if (cpy == NULL) cpy = ")"; {
+					if (mas_of_strings[count] != NULL){
+						if (flag_found_word == 1){
 							c = s[i];
 							s[i] = '\0';
-							rem2 = strlen(mas[count]);
-							mas[count] = realloc(mas[count], strlen(mas[count]) + i + s - str + 1);
-							strcpy(mas[count] + rem2, str);
+							rem2 = strlen(mas_of_strings[count]);
+							mas_of_strings[count] = realloc(mas_of_strings[count], strlen(mas_of_strings[count]) + i + s - str + 1);
+							strcpy(mas_of_strings[count] + rem2, str);
 							s[i] = c;
-							flag = 0;
+							flag_found_word = 0;
 						}
 						count++;
-						mas = realloc(mas, (count + 1) * sizeof(char *));
-						mas[count] = NULL;
+						mas_of_strings = realloc(mas_of_strings, (count + 1) * sizeof(char *));
+						mas_of_strings[count] = NULL;
 					}
 					if (s[i] == s[i + 1])
 						if (cpy == "&")
@@ -107,75 +110,78 @@ int main(int argc, char *argv[]){
 								cpy = "||";
 							else if (cpy == ">")
 								cpy = ">>";
-					if (flag == 1){
+					if (flag_found_word == 1){
 						c = s[i];
 						s[i] = '\0';
-						if (mas[count] == NULL){
-							mas[count] = malloc((s + i + 1 - str) * sizeof(char)); 
-							strcpy(mas[count], str);
+						if (mas_of_strings[count] == NULL){
+							mas_of_strings[count] = malloc((s + i + 1 - str) * sizeof(char)); 
+							strcpy(mas_of_strings[count], str);
 						} else
-							strcpy(mas[count] + strlen(mas[count]), str);
-						if (flag2 == 1){
-							flag2 = 0;
+							strcpy(mas_of_strings[count] + strlen(mas_of_strings[count]), str);
+						if (flag_found_space == 1){
+							flag_found_space = 0;
 							rem = 0;
 						}
 						count++;
-						mas = realloc(mas, (count + 1) * sizeof(char *));
-						mas[count] = NULL;
+						mas_of_strings = realloc(mas_of_strings, (count + 1) * sizeof(char *));
+						mas_of_strings[count] = NULL;
 						s[i] = c;
-						flag = 0;
+						flag_found_word = 0;
 					}
 					i += strlen(cpy) - 1;
-					mas[count] = cpy;
+					mas_of_strings[count] = cpy;
 					count++;
-					mas = realloc(mas, (count + 1) * sizeof(char *));
-					mas[count] = NULL;
+					mas_of_strings = realloc(mas_of_strings, (count + 1) * sizeof(char *));
+					mas_of_strings[count] = NULL;
 					break;
 				}
 				case '"':{
-					if (flag == 1){
+					if (flag_found_word == 1){
 						c = s[i];
 						s[i] = '\0';
-						if (mas[count] == NULL){
+						if (mas_of_strings[count] == NULL){
 							rem = s + i - str;
-							mas[count] = malloc((s + i + 1 - str) * sizeof(char));
-							strcpy(mas[count], str);
+							mas_of_strings[count] = malloc((s + i + 1 - str) * sizeof(char));
+							strcpy(mas_of_strings[count], str);
 						} else {
 							rem = rem + s + i - str;
-							mas[count] = realloc(mas[count], strlen(mas[count]) + rem);
-							strcpy(mas[count] + strlen(mas[count]), str);
+							mas_of_strings[count] = realloc(mas_of_strings[count], strlen(mas_of_strings[count]) + rem);
+							strcpy(mas_of_strings[count] + strlen(mas_of_strings[count]), str);
 						}
 						s[i] = c;
-						flag = 0;
+						flag_found_word = 0;
 					}
-					if (flag2 == 0)
-						if ((i == 0) ||(i > 0) && ((s[i - 1] == ' ') || (s[i - 1] == '>') || (s[i - 1] == '<') || (s[i - 1] == ')') || (s[i - 1] == '(') || (s[i - 1] == ';') || (s[i - 1] == '&') || (s[i - 1] == '|'))){
-							flag2 = 1;
+					if (flag_found_space == 0)
+						if ((i == 0) ||(i > 0) && ((s[i - 1] == ' ') || (s[i - 1] == '>') || (s[i - 1] == '<')
+						   || (s[i - 1] == ')') || (s[i - 1] == '(') || (s[i - 1] == ';') || (s[i - 1] == '&') || (s[i - 1] == '|'))){
+							flag_found_space = 1;
 							break;
 						}
-					if (flag2 == 1)
-						if ((i == strlen(s) - 1) || (i < strlen(s) - 1) && ((s[i + 1] == ' ') || (s[i + 1] == '>') || (s[i + 1] == '<') || (s[i + 1] == ')') || (s[i + 1] == '(') || (s[i + 1] == ';') || (s[i + 1] == '&') || (s[i + 1] == '|'))) {
-							flag2 = 0;
+					if (flag_found_space == 1)
+						if ((i == strlen(s) - 1) || (i < strlen(s) - 1) && ((s[i + 1] == ' ') || (s[i + 1] == '>') || (s[i + 1] == '<')
+							|| (s[i + 1] == ')') || (s[i + 1] == '(') || (s[i + 1] == ';') || (s[i + 1] == '&') || (s[i + 1] == '|'))) {
+							flag_found_space = 0;
 							count++;
-							mas = realloc(mas, (count + 1) * sizeof(char *));
-							mas[count] = NULL;
+							mas_of_strings = realloc(mas_of_strings, (count + 1) * sizeof(char *));
+							mas_of_strings[count] = NULL;
 							rem = 0;
 						}
 					break;
 				}
 				default:
-					if (flag == 0){
+					if (flag_found_word == 0){
 						str = s + i;
-						flag = 1;
+						flag_found_word = 1;
 					}
 			}
 		}
 		for (int i = 0; i < count; i++){
-			printf("%s\n", mas[i]);
-			if ((mas[i][0] != '&') && (mas[i][0] != '|') && (mas[i][0] != '>') && (mas[i][0] != ';') && (mas[i][0] != '(') && (mas[i][0] != ')'))
-				free(mas[i]);
+			printf("%s\n", mas_of_strings[i]);
+			if ((mas_of_strings[i][0] != '&') && (mas_of_strings[i][0] != '|') && (mas_of_strings[i][0] != '>') &&
+				(mas_of_strings[i][0] != ';') && (mas_of_strings[i][0] != '(') && (mas_of_strings[i][0] != ')') && (mas_of_strings[i][0] != '<'))
+					free(mas_of_strings[i]);
 		}
-		free(mas);
+		free(mas_of_strings);
 		free(s);
 	}
 	free(s);
