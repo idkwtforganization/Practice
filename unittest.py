@@ -37,6 +37,20 @@ class TestNash(unittest.TestCase):
         self.assertEqual(game_res[0], 5)
         np.testing.assert_array_equal(game_res[1], np.array([1, 0]))
         np.testing.assert_array_equal(game_res[2], np.array([0, 1]))
+        
+    def test_3rd_game(self):
+        game_res = nash_equilibrium(
+            np.array(
+                [[1, 2],
+                 [3, 4],
+                 [3, 4],
+                 [2, 1]]
+                ))
+        self.assertEqual(game_res[0], 5)
+        first_condition = np.equal(game_res[1], np.array([0, 1, 0, 0])) or \
+            np.equal(game_res[1], np.array([0, 0, 1, 0]))
+        self.assertEqual(first_condition, True)
+        np.testing.assert_array_equal(game_res[2], np.array([1, 0]))
 
 
 if __name__ == "__main__":
