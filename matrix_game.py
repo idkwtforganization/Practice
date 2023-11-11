@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Nov 10 20:24:31 2023
-
-@author: Aviator
-"""
-
 from typing import List, Tuple
 import numpy as np
 
@@ -24,6 +17,7 @@ def nash_equilibrium(payoff_matrix: np.ndarray) -> \
     A tuple containing the game value, the 1st player's strategy,
     and the 2nd player's strategy.
     """
+    # TODO Написать функцию
     pass
 
 
