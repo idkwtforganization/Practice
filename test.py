@@ -8,7 +8,7 @@ Created on Sat Nov 11 00:14:20 2023
 import unittest
 import numpy as np
 
-from NASH import nash_equilibrium
+from matrix_game import nash_equilibrium
 
 class TestNash(unittest.TestCase):
     
